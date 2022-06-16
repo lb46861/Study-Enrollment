@@ -1,0 +1,19 @@
+{% extends 'base.html' %} {% block content %}
+{% csrf_token %}
+
+<h2>Detalji kolegija</h2>
+{% csrf_token %}
+
+
+<p>Nositelj predmeta: {{predmet.nositelj}}</p>
+<p>Ime: {{predmet.name}}</p>
+<p>Kod: {{predmet.kod}}</p>
+<p>Program: {{predmet.program}}</p>
+<p>Ects: {{predmet.ects}}</p>
+<p>Semestar redovni: {{predmet.sem_red}}</p>
+<p>Semestar izvanredni: {{predmet.sem_izv}}</p>
+<p>Izborni: {{predmet.izborni}}</p>
+
+
+
+{% endblock %}

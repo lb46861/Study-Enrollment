@@ -1,0 +1,36 @@
+{% extends 'base.html' %} {% block content %}
+
+{% if request.user.role|lower == 'admin' %}
+
+<h2>Add professor for subject: {{predmet.name}}</h2>
+
+{% if data.profesori.count == 0 %}
+
+<h3>No professors to add</h3>
+
+{% else %}
+
+<form method="post">
+  {% csrf_token %}
+
+  Select professor: 
+  <select name="profesor">
+    {% for profesor in profesori %}
+    <option>{{ profesor }}</option>
+    {% endfor %}
+  </select>
+  <input type="hidden" name="movie" value="{{ profesor }}" />
+  <input type="submit" value="Add professor" />
+</form>
+
+{% endif %} 
+
+{% else %}
+
+  <p>No permission</p>
+
+{% endif %}
+
+
+
+{% endblock %}

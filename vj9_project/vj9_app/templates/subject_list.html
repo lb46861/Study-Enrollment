@@ -1,0 +1,20 @@
+{% extends 'base.html' %} {% block content %}
+{% csrf_token %}
+
+<p>Dodaj novi predmet:  <a href="{% url 'addpredmet' %}">Dodaj predmet</a></p>
+
+<h2>Svi predmeti: </h2>
+{% for predmet in predmeti %}
+
+    <p>{{predmet.name}}
+    <a href="{% url 'subjectdetails' predmet.id %}">Details</a>
+    <a href="{% url 'editsubject' predmet.id %}">Edit</a>
+    <a href="{% url 'deletesubject' predmet.id %}">Delete</a>
+    </p>
+
+{% endfor %}
+
+{% csrf_token %}
+
+
+ {% endblock %}

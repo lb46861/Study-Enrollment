@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% block content %}{% if request.user.role|lower == 'admin' %}
+<form method="POST">
+  <p>Are you sure want to delete this subject?</p>
+  {% csrf_token %}
+  <input type="submit" name="yes" value="yes" />
+  <input type="submit" name="no" value="no" />
+</form>
+
+{% else %}
+<p>You have no permission for this site!</p>
+
+{% endif %} {% endblock %}
