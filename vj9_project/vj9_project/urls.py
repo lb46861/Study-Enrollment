@@ -20,7 +20,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('register/', views.register, name='register'),
+    path('adduser/', views.adduser, name='adduser'),
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     path('home/', views.home, name='home'),
     path('addpredmet/', views.addpredmet, name='addpredmet'),
@@ -29,4 +29,9 @@ urlpatterns = [
     path('subjectdetails/<int:id>', views.subjectdetails, name='subjectdetails'),
     path('editsubject/<int:id>', views.editsubject, name='editsubject'),
     path('deletesubject/<int:id>', views.deletesubject, name='deletesubject'),
+    path('studentlist/', views.studentlist, name='studentlist'),
+    path('profesorlist/', views.profesorlist, name='profesorlist'),
+    path('edituser/<int:id>', views.edituser, name='edituser'),
+    path('deleteuser/<int:id>', views.deleteuser, name='deleteuser'),
+
 ]

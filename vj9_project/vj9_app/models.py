@@ -32,4 +32,4 @@ class Upisi(models.Model):
   student = models.ForeignKey(Korisnik, on_delete=models.CASCADE, null=True)
   subject = models.ForeignKey(Predmeti, on_delete=models.CASCADE, null=True)
   status = models.CharField(max_length=64)
-
+    

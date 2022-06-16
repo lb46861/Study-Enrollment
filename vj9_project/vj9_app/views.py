@@ -1,3 +1,6 @@
+from multiprocessing.sharedctypes import Value
+import string
+from xml.etree.ElementTree import tostring
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.contrib.auth.decorators import login_required
@@ -7,18 +10,18 @@ from .models import Predmeti, Korisnik, Uloge
 
 
 
-def register(request):
+def adduser(request):
     if request.method == 'GET':
         form = MyUserForm()
-        return render(request, 'register.html', {'form':form})
+        return render(request, 'add_user.html', {'form':form})
 
     if request.method == 'POST':
         form = MyUserForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')
+            return HttpResponse('User successffuly created!')
         else:
-            return HttpResponseNotAllowed('Not able to save!')
+            return HttpResponse('Something went wrong!')
 
 
 @login_required
@@ -38,7 +41,7 @@ def addpredmet(request):
             form.save()
             return redirect('subjectlist')
         else:
-            return HttpResponseNotAllowed('Not able to save!')
+            return HttpResponse('Not able to save!')
 
 @login_required(login_url='login')
 def addnositelj(request, id):
@@ -63,15 +66,43 @@ def addnositelj(request, id):
         return HttpResponse("Something went wrong!")
 
 
-@login_required
+
+
+@login_required(login_url='login')
+def subjectlist(request):
+    predmeti = Predmeti.objects.all()
+    return render(request, 'subject_list.html', {'predmeti': predmeti})
+
+
+@login_required(login_url='login')
+def studentlist(request):
+    users = Korisnik.objects.all()
+    students = []
+    for user in users:
+        if str(user.role) == 'student':
+            students.append(user)
+    return render(request, "student_list.html", {'users':students})
+
+
+@login_required(login_url='login')
+def profesorlist(request):
+    users = Korisnik.objects.all()
+    profesors = []
+    for user in users:
+        if str(user.role) == 'profesor':
+            profesors.append(user)
+    return render(request, "profesor_list.html", {'users':profesors})  
+
+
+
+
+@login_required(login_url='login')
 def subjectdetails(request, id):
     predmet = Predmeti.objects.get(id = id)
-
     return render(request, "subject_details.html", {'predmet': predmet})
 
 
-
-@login_required
+@login_required(login_url='login')
 def editsubject(request, id):
     predmet = Predmeti.objects.get(id = id)
     form = PredmetiForm(instance=predmet)
@@ -84,25 +115,42 @@ def editsubject(request, id):
 
     return render(request, "edit_subject.html", {'form': form})
 
+
+@login_required(login_url='login')
+def edituser(request, id):
+    user = Korisnik.objects.get(id = id)
+    form = MyUserForm(instance=user)
+
+    if request.method=='POST':
+        form = MyUserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return HttpResponse('Successfully edited!')
+
+    return render(request, "edit_user.html", {'form': form})
+
+
 @login_required(login_url='login')
 def deletesubject(request, id):
     predmet = Predmeti.objects.get(id=id)
-
-    if(request.method == 'GET'):
-         return render(request, "delete_subject.html")
-
-    elif request.method=='POST':
+    if request.method=='POST':
         if 'yes' in request.POST:
             predmet.delete()
             return HttpResponse('Successfully deleted!')
         else:
             return redirect('subjectlist')
-    else:
-        return HttpResponse("Something went wrong!")
+    return render(request, "delete_object.html")
 
 
-    
 @login_required(login_url='login')
-def subjectlist(request):
-    predmeti = Predmeti.objects.all()
-    return render(request, 'subject_list.html', {'predmeti': predmeti})
+def deleteuser(request, id):
+    user = Korisnik.objects.get(id=id)
+    if request.method=='POST':
+        if 'yes' in request.POST:
+            user.delete()
+            return HttpResponse('Successfully deleted!')
+        else:
+            return redirect('subjectlist')
+
+    return render(request, "delete_object.html")
+

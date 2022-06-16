@@ -10,13 +10,13 @@
 
 {% else %}
 
+<p>Trenutno odabrani profesor: {{predmet.nositelj}}</p>
 <form method="post">
   {% csrf_token %}
-
   Select professor: 
   <select name="profesor">
     {% for profesor in profesori %}
-    <option>{{ profesor }}</option>
+    <option {% if profesor.id == predmet.nositelj.id %} selected {% endif %}>{{profesor}}</option>
     {% endfor %}
   </select>
   <input type="hidden" name="movie" value="{{ profesor }}" />

@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% block content %}
+{% csrf_token %}
+
+<p>Dodaj novog korisnika:  <a href="{% url 'adduser' %}">Dodaj korisnika</a></p>
+
+
+
+<h2>List of profesors:</h2>
+{% for user in users %}
+
+
+    <p>{{user}}
+    <a href="{% url 'edituser' user.id %}">Edit</a>
+    <a href="{% url 'deleteuser' user.id %}">Delete</a>
+
+    </p>
+
+{% endfor %}
+{% csrf_token %}
+
+
+ {% endblock %}

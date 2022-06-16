@@ -1,5 +1,5 @@
-from django.forms import ModelForm
-from .models import Korisnik, Predmeti
+from django.forms import ChoiceField, ModelForm
+from .models import Korisnik, Predmeti, Uloge
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -14,4 +14,10 @@ class MyUserForm(UserCreationForm):
 class PredmetiForm(ModelForm):
   class Meta:
     model = Predmeti
-    fields = ['name', 'kod', 'program', 'ects', 'sem_red', 'sem_izv', 'izborni']
+    fields = ['nositelj','name', 'kod', 'program', 'ects', 'sem_red', 'sem_izv', 'izborni']
+
+  def __init__(self, *args, **kwargs):
+    super(PredmetiForm, self).__init__(*args, **kwargs)
+    roles = Uloge.objects.get(role='profesor')
+    profesori = Korisnik.objects.filter(role=roles)
+    self.fields['nositelj'].queryset = profesori
