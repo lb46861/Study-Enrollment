@@ -5,51 +5,157 @@
 <div class="upisnilist">
     <h1>{{student.username|capfirst}}'s Upisni list</h1>
 
-    <div class="leftupisani">
-        <h2>Neupisani predmeti</h2>
-            {% if student.status == 'red' %}
-                <h3>Semestar 1</h3>
-                {% for predmet in predmeti %}
-                    {% if predmet.sem_red == 1 and predmet.id not in upisani %}     
-                        <p>{{predmet}} <a class='upis' href="{%url 'upispredmeta' student_id=student.id predmet_id=predmet.id %}">+</a>
-                        &nbsp;<a href="{% url 'subjectdetails' predmet.id %}">Details</a></p>
-                    {% endif %}
+    <!-----[ NEUPISANI PREDMETI POREDANI PO SEMESTRU ]---->
+    <div class="leftupisni">
+        <h2>Neupisani predmeti:</h2>
+        {% if student.status == 'red' %}
+            {% with ''|center:6 as range %}
+                {% for _ in range %}
+                    <h3>Semestar {{forloop.counter}}:</h3>
+                    {% for predmet in predmeti %}
+                        {% if predmet.sem_red == forloop.parentloop.counter and predmet.id not in upisani %}                   
+                            <p>{{predmet}} <a class='upis' href="{%url 'upispredmeta' student_id=student.id predmet_id=predmet.id %}">+</a>
+                                &nbsp;<a href="{% url 'subjectdetails' predmet.id %}">Details</a></p>                           
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
+            {% endwith %}
 
-                <h3>Semestar 2</h3>
-                {% for predmet in predmeti %}
-                    {% if predmet.sem_red == 2 and predmet.id not in upisani  %}
-                        <p>{{predmet}} <a class='upis' href="{%url 'upispredmeta' student_id=student.id predmet_id=predmet.id %}">+</a>
-                        &nbsp;<a href="{% url 'subjectdetails' predmet.id %}">Details</a></p>
-                    {% endif %}
+        {% elif student.status == 'izv' %}
+            {% with ''|center:8 as range %}
+                {% for _ in range %}
+                    <h3>Semestar {{forloop.counter}}:</h3>
+                    {% for predmet in predmeti %}
+                        {% if predmet.sem_izv == forloop.parentloop.counter and predmet.id not in upisani %}                   
+                            <p>{{predmet}} <a class='upis' href="{%url 'upispredmeta' student_id=student.id predmet_id=predmet.id %}">+</a>
+                                &nbsp;<a href="{% url 'subjectdetails' predmet.id %}">Details</a></p>                        
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
+            {% endwith %}
 
-                <h3>Semestar 3</h3>
-                {% for predmet in predmeti %}
-                    {% if predmet.sem_red == 3 and predmet.id not in upisani  %}
-                        <p>{{predmet}} <a class='upis' href="{%url 'upispredmeta' student_id=student.id predmet_id=predmet.id %}">+</a>
-                        &nbsp;<a href="{% url 'subjectdetails' predmet.id %}">Details</a></p>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
+        {% endif %}
     </div>
 
-    <div class="righupisani">
-        <h2>Upisani predmeti</h2>
+
+
+    <div class="rightupisni">
+
+        <!-----[ UPISANI PREDMETI POREDANI PO SEMESTRU ]---->
+        <h2>Upisani predmeti:</h2>
+        {% if student.status == 'red' %}
+            {% with ''|center:6 as range %}
+                {% for _ in range %}          
+                    {% for upis in upisni %}
+                        {% if upis.subject.sem_red == forloop.parentloop.counter and upis.status == 'upisan' %}                   
+                            <p>Semestar {{forloop.parentloop.counter}} - {{upis.subject}} <a class='ispis' href="{%url 'ispispredmeta' student_id=student.id predmet_id=upis.subject.id %}">-</a>
+                                &nbsp;<a href="{% url 'subjectdetails' upis.subject.id %}">Details</a></p>                        
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            {% endwith %}
+
+        {% elif student.status == 'izv' %}
+            {% with ''|center:8 as range %}
+                {% for _ in range %}          
+                    {% for upis in upisni %}
+                        {% if upis.subject.sem_izv == forloop.parentloop.counter and upis.status == 'upisan' %}                   
+                            <p>Semestar {{forloop.parentloop.counter}} - {{upis.subject}} <a class='ispis' href="{%url 'ispispredmeta' student_id=student.id predmet_id=upis.subject.id %}">-</a>
+                                &nbsp;<a href="{% url 'subjectdetails' upis.subject.id %}">Details</a></p>                     
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            {% endwith %}
+        {% endif %}
+
+        <!-----[ POLOZENI PREDMETI POREDANI PO SEMESTRU ]---->
+        <h2>Položeni predmeti:</h2>
+        {% if student.status == 'red' %}
+            {% with ''|center:6 as range %}
+                {% for _ in range %}          
+                    {% for upis in upisni %}
+                        {% if upis.subject.sem_red == forloop.parentloop.counter and upis.status == 'polozen' %}                   
+                            <p>Semestar {{forloop.parentloop.counter}} - {{upis.subject}} 
+                            <a href="{% url 'subjectdetails' upis.subject.id %}">Details</a></p>               
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            {% endwith %}
+
+        {% elif student.status == 'izv' %}
+            {% with ''|center:8 as range %}
+                {% for _ in range %}          
+                    {% for upis in upisni %}
+                        {% if upis.subject.sem_izv == forloop.parentloop.counter and upis.status == 'polozen' %}                   
+                            <p>Semestar {{forloop.parentloop.counter}} - {{upis.subject}} 
+                            <a href="{% url 'subjectdetails' upis.subject.id %}">Details</a></p>                  
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            {% endwith %}
+        {% endif %}
+        
+        
+        
+        <!-----[ PREDMETI NA KOJE SE IZGUBILO PRAVO POREDANI PO SEMESTRU ]---->
+        <h2>Predmeti na koje ste izgubili pravo za ovu godinu:</h2>
+        {% if student.status == 'red' %}
+            {% with ''|center:6 as range %}
+                {% for _ in range %}          
+                    {% for upis in upisni %}
+                        {% if upis.subject.sem_red == forloop.parentloop.counter and upis.status == 'izgubio/la pravo' %}                   
+                            <p>Semestar {{forloop.parentloop.counter}} - {{upis.subject}} 
+                            <a href="{% url 'subjectdetails' upis.subject.id %}">Details</a></p>               
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            {% endwith %}
+
+        {% elif student.status == 'izv' %}
+            {% with ''|center:8 as range %}
+                {% for _ in range %}          
+                    {% for upis in upisni %}
+                        {% if upis.subject.sem_izv == forloop.parentloop.counter and upis.status == 'izgubio/la pravo' %}                   
+                            <p>Semestar {{forloop.parentloop.counter}} - {{upis.subject}} 
+                            <a href="{% url 'subjectdetails' upis.subject.id %}">Details</a></p>                  
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            {% endwith %}
+        {% endif %}
+        
+
+
+
+
+
+        <!----[ DRUGI NACIN - NIJE POREDANO PO SEMESTRU VEC PO VREMENU KREIRANJA OBJEKTA ]---->
+        <!-- <h2>Upisani predmeti:</h2>     
         {% for upis in upisni %}
             {% if upis.status == 'upisan' %}
-                <p>{{upis.subject}}<a class='ispis' href="{% url 'ispispredmeta' student_id=student.id predmet_id=upis.subject.id %}">-</a>
+                <p>{{upis.subject}} -
+                {% if student.status == 'red' %} Semestar {{upis.subject.sem_red}} {% else %} Semestar {{upis.subject.sem_red}} {% endif %}
+                <a class='ispis' href="{% url 'ispispredmeta' student_id=student.id predmet_id=upis.subject.id %}">-</a>
                 &nbsp;<a href="{% url 'subjectdetails' upis.subject.id %}">Details</a></p>
             {% endif %}
-        {% endfor %}
+        {% endfor %} 
 
-        <h2>Položeni predmeti</h2>
+        <h2>Položeni predmeti:</h2>
         {% for upis in upisni %}
             {% if upis.status == 'polozen' %}
                 <p>{{upis.subject}} &nbsp;<a href="{% url 'subjectdetails' upis.subject.id %}">Details</a></p>
             {% endif %}
 
         {% endfor %}
+
+        <h2>Predmeti na koje ste izgubili pravo za ovu godinu:</h2>
+        {% for upis in upisni %}
+            {% if upis.status == 'izgubio/la pravo' %}
+                <p>{{upis.subject}} &nbsp;<a href="{% url 'subjectdetails' upis.subject.id %}">Details</a></p>
+            {% endif %}
+
+        {% endfor %}
+        -->
     </div>  
 
 </div>

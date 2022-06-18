@@ -1,8 +1,10 @@
+from asyncio.windows_events import NULL
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .forms import MyUserForm, PredmetiForm
 from .models import Predmeti, Korisnik, Uloge, Upisi
+import operator
 # Create your views here.
 
 
@@ -21,7 +23,7 @@ def adduser(request):
             return HttpResponse('Something went wrong!')
 
 
-@login_required
+@login_required(login_url='login')
 def home(request):
     return render(request, 'home.html')
 
@@ -94,16 +96,20 @@ def profesorlist(request):
 
 
 
-@login_required(login_url='login')
-def mysubjects(request):
-    predmeti = Predmeti.objects.all()
-    return render(request, "my_subjects.html", {'predmeti': predmeti})
 
 
 @login_required(login_url='login')
 def subjectdetails(request, id):
     predmet = Predmeti.objects.get(id = id)
     return render(request, "subject_details.html", {'predmet': predmet})
+
+
+
+
+@login_required(login_url='login')
+def mysubjects(request, profesor_id):
+    predmeti = Predmeti.objects.filter(nositelj = profesor_id)
+    return render(request, "my_subjects.html", {'predmeti': predmeti, 'profesor_id': profesor_id})
 
     
 @login_required(login_url='login')
@@ -119,6 +125,7 @@ def upisni(request, student_id):
         "upisani": upisani,
         "upisni": upisni
     }
+
     return render(request, "upisni_list.html", data)
 
 @login_required(login_url='login')
@@ -130,6 +137,40 @@ def upispredmeta(request, student_id, predmet_id):
         return redirect('upisni', student.id)
     else:  
         return HttpResponse('You have no permission!')
+
+
+@login_required(login_url='login')
+def upisprofesor(request, student_id, predmet_id):
+    predmet = Predmeti.objects.get(id = predmet_id)
+    if request.user.id == predmet.nositelj.id or str(request.user.role) == 'admin':
+        upis = Upisi.objects.get(student=student_id, subject=predmet_id)
+        upis.status = 'upisan'
+        upis.save()
+        return redirect('popisstudenata', predmet_id)
+    else:  
+        return HttpResponse('You have no permission!')
+
+@login_required(login_url='login')
+def polozenpredmet(request, student_id, predmet_id):
+    predmet = Predmeti.objects.get(id = predmet_id)
+    if request.user.id == predmet.nositelj.id or str(request.user.role) == 'admin':
+        upis = Upisi.objects.get(student=student_id, subject=predmet_id)
+        upis.status = 'polozen'
+        upis.save()
+        return redirect('popisstudenata', predmet_id)
+    else:  
+        return HttpResponse('You have no permission!')
+
+@login_required(login_url='login')
+def izgubiopravo(request, student_id, predmet_id):
+    predmet = Predmeti.objects.get(id = predmet_id)
+    if request.user.id == predmet.nositelj.id or str(request.user.role) == 'admin':
+        upis = Upisi.objects.get(student=student_id, subject=predmet_id)
+        upis.status = 'izgubio/la pravo'
+        upis.save()
+        return redirect('popisstudenata', predmet_id)
+    else:  
+        return HttpResponse('You have no permission!')      
 
 
 @login_required(login_url='login')
@@ -145,6 +186,11 @@ def popisstudenata(request, predmet_id):
     upis = Upisi.objects.filter(subject=predmet)
     return render(request, "popis_studenata.html", {'upisani': upis, "predmet": predmet})
 
+@login_required(login_url='login')
+def studentspredmet(request, predmet_id):
+    predmet = Predmeti.objects.get(id = predmet_id)
+    upis = Upisi.objects.filter(subject=predmet)
+    return render(request, "students_predmet.html", {'upisani': upis, "predmet": predmet})
 
 
 @login_required(login_url='login')

@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
-{% csrf_token %}
 
+{% if request.user.role|lower == 'admin' %}
 <p>Dodaj novi predmet:  <a href="{% url 'addpredmet' %}">Dodaj predmet</a></p>
 
 <h2>Svi predmeti: </h2>
@@ -11,12 +11,15 @@
     <a href="{% url 'editsubject' predmet.id %}">Edit</a>&nbsp;
     <a href="{% url 'deletesubject' predmet.id %}">Delete</a>&nbsp;
     <a href="{% url 'addnositelj' predmet.id %}">Professor</a>&nbsp;
-    <a href="{% url 'popisstudenata' predmet.id %}">Popis studenata</a>
+    <a href="{% url 'studentspredmet' predmet.id %}">Studenti</a>
     </p>
 
 {% endfor %}
 
-{% csrf_token %}
 
+{% else %}
+<p>You have no permission</p>
+
+{% endif %}
 
  {% endblock %}

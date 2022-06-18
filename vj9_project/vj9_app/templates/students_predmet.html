@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block content %}
+
+{% if request.user.role|lower == 'admin' or request.user.role|lower == 'profesor' and predmet.nositelj.id == request.user.id %}
+<h2>Popis studenata na kolegiju {{predmet.name}} </h2>
+
+<h3>Upisali:</h3>
+{% for upis in upisani %}
+    {% if upis.status == 'upisan' %}
+        <p>{{upis.student}}  &nbsp;{{upis.student.email}}</p>
+    {% endif %}
+{% endfor %}
+
+<h3>Polozili:</h3>
+{% for upis in upisani %}
+    {% if upis.status == 'polozen' %}
+        <p>{{upis.student.username}} &nbsp;{{upis.student.email}} </p>
+    {% endif %}
+{% endfor %}
+
+<h3>Izgubili pravo:</h3>
+{% for upis in upisani %}
+    {% if upis.status == 'izgubio/la pravo' %}
+        <p>{{upis.student.username}} &nbsp;{{upis.student.email}} </p>
+    {% endif %}
+{% endfor %}
+
+{% else %}
+
+<p>You have no permission.</p>
+{% endif %}
+
+ {% endblock %}

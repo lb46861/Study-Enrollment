@@ -6,14 +6,30 @@
 <h3>Upisali:</h3>
 {% for upis in upisani %}
     {% if upis.status == 'upisan' %}
-        <p>{{upis.student}}</p>
+        <p>{{upis.student}}  &nbsp;{{upis.student.email}}
+        <a class='polozio' href="{%url 'polozenpredmet' student_id=upis.student.id predmet_id=upis.subject.id %}">Polozio/la</a>
+        <a class='izgubio' href="{%url 'izgubiopravo' student_id=upis.student.id predmet_id=upis.subject.id %}">Izgubio/la pravo</a>
+        </p>
     {% endif %}
 {% endfor %}
 
 <h3>Polozili:</h3>
 {% for upis in upisani %}
     {% if upis.status == 'polozen' %}
-        <p>{{upis.student.username}} &nbsp;{{upis.student.email}}</p>
+        <p>{{upis.student.username}} &nbsp;{{upis.student.email}} <a class='vrati' href="{%url 'upisprofesor' student_id=upis.student.id predmet_id=upis.subject.id %}" >Vrati u upis</a>
+        <a class='izgubio' href="{%url 'izgubiopravo' student_id=upis.student.id predmet_id=upis.subject.id %}">Izgubio/la pravo</a>
+        </p>
+    {% endif %}
+{% endfor %}
+
+<h3>Izgubili pravo:</h3>
+{% for upis in upisani %}
+    {% if upis.status == 'izgubio/la pravo' %}
+        <p>{{upis.student.username}} &nbsp;{{upis.student.email}}
+            <a class='vrati' href="{%url 'upisprofesor' student_id=upis.student.id predmet_id=upis.subject.id %}" >Vrati u upis</a>
+            <a class='polozio' href="{%url 'polozenpredmet' student_id=upis.student.id predmet_id=upis.subject.id %}">Polozio/la</a>
+
+        </p>
     {% endif %}
 {% endfor %}
 

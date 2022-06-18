@@ -12,6 +12,35 @@
     <title>Upisni</title>
   </head>
   <body>
+
+    <nav><ul>
+     
+        {% if request.user.is_authenticated %}
+        
+          <li><a href="{% url 'home' %}">Home</a></li>
+
+        {% if request.user.role|lower == 'student' %}
+          <li><a href="{% url 'upisni' request.user.id %}">Upisni list</a></li>
+
+        {% elif request.user.role|lower == 'profesor' %}
+          <li><a href="{% url 'mysubjects' request.user.id %}">Moji predmeti</a></li>
+        {%elif request.user.role|lower == 'admin' %}
+          <li><a href="{% url 'subjectlist' %}">Predmeti</a></li>
+          <li><a href="{% url 'profesorlist' %}">Profesori</a></li>
+          <li><a href="{% url 'studentlist' %}">Studenti</a></li>
+        {% endif %}
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+
+        {% else %}
+          <li><a href="{% url 'login' %}">Login</a></li>
+        {% endif %}
+
+   
+    </ul></nav>
+
+
     {% block content %} {% endblock %}
+    
+
   </body>
 </html>

@@ -1,3 +1,8 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
 .upis {
     background: #4E9CAF;
     border-radius: 5px;
@@ -24,16 +29,52 @@
     margin-right: 10px;
 }
 
+.polozio{
+    background: #149e20;
+    border-radius: 5px;
+    color: white;
+    width: 100px;
+    line-height: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.izgubio{
+    background: #000000;
+    border-radius: 5px;
+    color: white;
+    width: 150px;
+    line-height: 20px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.vrati{
+    background: #4E9CAF;
+    border-radius: 5px;
+    color: white;
+    width: 110px;
+    line-height: 20px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
 .upisnilist{
     padding: 20px;
 }
 
-.leftupisani{
+.leftupisni{
     width: 50%;
     float: left;
 
 }
-.righupisani{
+.rightupisni{
     width: 50%;
     float: right;
 
@@ -41,4 +82,60 @@
 
 h1, h2, h3, p{
     font-family: 'DM Sans', sans-serif;
+    padding: 10px;
 }
+
+
+ul{
+    list-style-type: none;
+    margin-bottom: 20px;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+  
+li {
+    float: left;
+}
+  
+li a {
+    font-family: 'DM Sans', sans-serif;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+  
+li a:hover {
+    background-color: #111;
+}
+
+input[type=submit]{
+    background-color: #eee;
+    border: 1px solid #ddd;
+    color: #333; 
+    font-size: 1em; 
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+
+  input[type=number],
+  input[type=text],
+  input[type=password],
+  input[type=email],
+  input[type=select] {
+    width: 180px;
+    padding: 5px 5px;
+    margin: 8px 0;
+    box-sizing: border-box;
+  }
+  select {
+    width: 180px;
+    padding:5px;
+    box-sizing: border-box;
+    margin: 8px 0;
+  }
+

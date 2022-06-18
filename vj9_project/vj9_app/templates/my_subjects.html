@@ -2,16 +2,16 @@
 {% csrf_token %}
 
 
-{% if request.user.role|lower == 'profesor' %}
+{% if request.user.role|lower == 'admin' or request.user.id == profesor_id %}
 <h2>Moji predmeti: </h2>
 
 {% for predmet in predmeti %}
 
-    {% if predmet.nositelj|lower == request.user.username|lower %}
+    {% if predmet.nositelj.id == profesor_id %}
 
     <p>{{predmet.name}}
     <a href="{% url 'subjectdetails' predmet.id %}">Details</a>&nbsp;
-
+    <a href="{% url 'popisstudenata' predmet.id %}">Popis studenata</a>
     </p>
 
     {% endif %}
