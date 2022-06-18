@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block content %}
+{% csrf_token %}
+
+
+{% if request.user.role|lower == 'profesor' %}
+<h2>Moji predmeti: </h2>
+
+{% for predmet in predmeti %}
+
+    {% if predmet.nositelj|lower == request.user.username|lower %}
+
+    <p>{{predmet.name}}
+    <a href="{% url 'subjectdetails' predmet.id %}">Details</a>&nbsp;
+
+    </p>
+
+    {% endif %}
+
+{% endfor %}
+
+
+
+{% else %}
+
+<p>No permission.</p>
+
+{% endif %}
+
+{% csrf_token %}
+
+
+ {% endblock %}

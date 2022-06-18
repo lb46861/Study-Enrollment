@@ -29,7 +29,10 @@ class Predmeti(models.Model):
         return self.name
 
 class Upisi(models.Model):
-  student = models.ForeignKey(Korisnik, on_delete=models.CASCADE, null=True)
-  subject = models.ForeignKey(Predmeti, on_delete=models.CASCADE, null=True)
-  status = models.CharField(max_length=64)
+    student = models.ForeignKey(Korisnik, on_delete=models.CASCADE, null=True)
+    subject = models.ForeignKey(Predmeti, on_delete=models.CASCADE, null=True)
+    status = models.CharField(max_length=64)
+
+    def __str__(self):
+        return f"{self.student} - {self.subject} - {self.status}"
     

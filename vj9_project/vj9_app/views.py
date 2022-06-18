@@ -1,11 +1,8 @@
-from multiprocessing.sharedctypes import Value
-import string
-from xml.etree.ElementTree import tostring
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseNotAllowed
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .forms import MyUserForm, PredmetiForm
-from .models import Predmeti, Korisnik, Uloge
+from .models import Predmeti, Korisnik, Uloge, Upisi
 # Create your views here.
 
 
@@ -57,10 +54,12 @@ def addnositelj(request, id):
 
     elif request.method == 'POST':
         nositelj = request.POST['profesor']
+        if nositelj == '----':
+            return redirect('subjectlist')
         noisteljKorisnik = Korisnik.objects.filter(username=nositelj)[0]
         predmet.nositelj = noisteljKorisnik
         predmet.save()  
-        return redirect('subjectlist')
+        return HttpResponse("Subject holder updated!")
     
     else:
         return HttpResponse("Something went wrong!")
@@ -95,11 +94,57 @@ def profesorlist(request):
 
 
 
+@login_required(login_url='login')
+def mysubjects(request):
+    predmeti = Predmeti.objects.all()
+    return render(request, "my_subjects.html", {'predmeti': predmeti})
+
 
 @login_required(login_url='login')
 def subjectdetails(request, id):
     predmet = Predmeti.objects.get(id = id)
     return render(request, "subject_details.html", {'predmet': predmet})
+
+    
+@login_required(login_url='login')
+def upisni(request, student_id):
+    predmeti = Predmeti.objects.all()
+    student = Korisnik.objects.get(id = student_id)
+    upisni = Upisi.objects.filter(student = student.id)
+    upisani = upisni.values_list('subject', flat=True)
+    
+    data = {
+        "predmeti": predmeti,
+        "student": student,
+        "upisani": upisani,
+        "upisni": upisni
+    }
+    return render(request, "upisni_list.html", data)
+
+@login_required(login_url='login')
+def upispredmeta(request, student_id, predmet_id):
+    if str(request.user.role) == 'admin' or request.user.id == student_id:
+        student = Korisnik.objects.get(id=student_id)
+        predmet = Predmeti.objects.get(id=predmet_id)
+        Upisi.objects.create(student=student, subject=predmet, status='upisan')
+        return redirect('upisni', student.id)
+    else:  
+        return HttpResponse('You have no permission!')
+
+
+@login_required(login_url='login')
+def ispispredmeta(request, student_id, predmet_id):
+    upis = Upisi.objects.filter(student=student_id, subject=predmet_id)
+    upis.delete()
+    return redirect('upisni', student_id)
+
+
+@login_required(login_url='login')
+def popisstudenata(request, predmet_id):
+    predmet = Predmeti.objects.get(id = predmet_id)
+    upis = Upisi.objects.filter(subject=predmet)
+    return render(request, "popis_studenata.html", {'upisani': upis, "predmet": predmet})
+
 
 
 @login_required(login_url='login')
@@ -139,7 +184,7 @@ def deletesubject(request, id):
             return HttpResponse('Successfully deleted!')
         else:
             return redirect('subjectlist')
-    return render(request, "delete_object.html")
+    return render(request, "delete_object.html", {'object':predmet})
 
 
 @login_required(login_url='login')
@@ -152,5 +197,5 @@ def deleteuser(request, id):
         else:
             return redirect('subjectlist')
 
-    return render(request, "delete_object.html")
+    return render(request, "delete_object.html", {'object':user})
 

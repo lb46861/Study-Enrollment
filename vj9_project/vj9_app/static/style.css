@@ -1,0 +1,44 @@
+.upis {
+    background: #4E9CAF;
+    border-radius: 5px;
+    color: white;
+    width: 20px;
+    line-height: 20px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    float: left;
+    margin-right: 10px;
+}
+
+.ispis {
+    background: #941010;
+    border-radius: 5px;
+    color: white;
+    width: 20px;
+    line-height: 20px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    float: left;
+    margin-right: 10px;
+}
+
+.upisnilist{
+    padding: 20px;
+}
+
+.leftupisani{
+    width: 50%;
+    float: left;
+
+}
+.righupisani{
+    width: 50%;
+    float: right;
+
+}
+
+h1, h2, h3, p{
+    font-family: 'DM Sans', sans-serif;
+}

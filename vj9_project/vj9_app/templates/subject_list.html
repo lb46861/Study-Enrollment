@@ -7,10 +7,11 @@
 {% for predmet in predmeti %}
 
     <p>{{predmet.name}}
-    <a href="{% url 'subjectdetails' predmet.id %}">Details</a>
-    <a href="{% url 'editsubject' predmet.id %}">Edit</a>
-    <a href="{% url 'deletesubject' predmet.id %}">Delete</a>
-    <a href="{% url 'addnositelj' predmet.id %}">Edit profesor</a>
+    <a href="{% url 'subjectdetails' predmet.id %}">Details</a>&nbsp;
+    <a href="{% url 'editsubject' predmet.id %}">Edit</a>&nbsp;
+    <a href="{% url 'deletesubject' predmet.id %}">Delete</a>&nbsp;
+    <a href="{% url 'addnositelj' predmet.id %}">Professor</a>&nbsp;
+    <a href="{% url 'popisstudenata' predmet.id %}">Popis studenata</a>
     </p>
 
 {% endfor %}

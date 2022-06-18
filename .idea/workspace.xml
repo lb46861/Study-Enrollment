@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="da9d2b7c-868d-4cd9-9238-b9a0685b3be1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/vj9_project/vj9_app/templates/add_user.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vj9_project/vj9_app/templates/delete_object.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vj9_project/vj9_app/templates/edit_user.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vj9_project/vj9_app/templates/profesor_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vj9_project/vj9_app/templates/student_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vj9_project/vj9_app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/vj9_project/vj9_app/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vj9_project/vj9_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/vj9_project/vj9_app/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vj9_project/vj9_app/templates/add_nositelj.html" beforeDir="false" afterPath="$PROJECT_DIR$/vj9_project/vj9_app/templates/add_nositelj.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vj9_project/vj9_app/templates/subject_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/vj9_project/vj9_app/templates/subject_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vj9_project/vj9_app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/vj9_project/vj9_app/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vj9_project/vj9_project/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/vj9_project/vj9_project/urls.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2Afwn7yH2TWASPgLNTM5ILu0xd7" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="da9d2b7c-868d-4cd9-9238-b9a0685b3be1" name="Changes" comment="" />
+      <created>1655414117020</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1655414117020</updated>
+      <workItem from="1655414119788" duration="14000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

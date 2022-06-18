@@ -1,0 +1,63 @@
+{% extends 'base.html' %} {% block content %}
+
+{% if request.user.role|lower == 'admin' or request.user.role|lower == 'student' and request.user.id == student.id %}
+
+<div class="upisnilist">
+    <h1>{{student.username|capfirst}}'s Upisni list</h1>
+
+    <div class="leftupisani">
+        <h2>Neupisani predmeti</h2>
+            {% if student.status == 'red' %}
+                <h3>Semestar 1</h3>
+                {% for predmet in predmeti %}
+                    {% if predmet.sem_red == 1 and predmet.id not in upisani %}     
+                        <p>{{predmet}} <a class='upis' href="{%url 'upispredmeta' student_id=student.id predmet_id=predmet.id %}">+</a>
+                        &nbsp;<a href="{% url 'subjectdetails' predmet.id %}">Details</a></p>
+                    {% endif %}
+                {% endfor %}
+
+                <h3>Semestar 2</h3>
+                {% for predmet in predmeti %}
+                    {% if predmet.sem_red == 2 and predmet.id not in upisani  %}
+                        <p>{{predmet}} <a class='upis' href="{%url 'upispredmeta' student_id=student.id predmet_id=predmet.id %}">+</a>
+                        &nbsp;<a href="{% url 'subjectdetails' predmet.id %}">Details</a></p>
+                    {% endif %}
+                {% endfor %}
+
+                <h3>Semestar 3</h3>
+                {% for predmet in predmeti %}
+                    {% if predmet.sem_red == 3 and predmet.id not in upisani  %}
+                        <p>{{predmet}} <a class='upis' href="{%url 'upispredmeta' student_id=student.id predmet_id=predmet.id %}">+</a>
+                        &nbsp;<a href="{% url 'subjectdetails' predmet.id %}">Details</a></p>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+    </div>
+
+    <div class="righupisani">
+        <h2>Upisani predmeti</h2>
+        {% for upis in upisni %}
+            {% if upis.status == 'upisan' %}
+                <p>{{upis.subject}}<a class='ispis' href="{% url 'ispispredmeta' student_id=student.id predmet_id=upis.subject.id %}">-</a>
+                &nbsp;<a href="{% url 'subjectdetails' upis.subject.id %}">Details</a></p>
+            {% endif %}
+        {% endfor %}
+
+        <h2>Položeni predmeti</h2>
+        {% for upis in upisni %}
+            {% if upis.status == 'polozen' %}
+                <p>{{upis.subject}} &nbsp;<a href="{% url 'subjectdetails' upis.subject.id %}">Details</a></p>
+            {% endif %}
+
+        {% endfor %}
+    </div>  
+
+</div>
+
+
+{% else %}
+<p>No permission for this site.</p>
+
+{% endif %}
+
+ {% endblock %}

@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('adduser/', views.adduser, name='adduser'),
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
+    path('logout/', LogoutView.as_view(template_name='logout.html'), name='logout'),
     path('home/', views.home, name='home'),
     path('addpredmet/', views.addpredmet, name='addpredmet'),
     path('addnositelj/<int:id>/', views.addnositelj, name='addnositelj'),
@@ -33,5 +34,9 @@ urlpatterns = [
     path('profesorlist/', views.profesorlist, name='profesorlist'),
     path('edituser/<int:id>', views.edituser, name='edituser'),
     path('deleteuser/<int:id>', views.deleteuser, name='deleteuser'),
-
+    path('mysubjects/', views.mysubjects, name='mysubjects'),
+    path('upisni/<int:student_id>/', views.upisni, name='upisni'),
+    path('upispredmeta/<int:student_id>/<int:predmet_id>/', views.upispredmeta, name='upispredmeta'),
+    path('ispispredmeta/<int:student_id>/<int:predmet_id>/', views.ispispredmeta, name='ispispredmeta'),
+    path('popisstudenata/<int:predmet_id>/', views.popisstudenata, name='popisstudenata'),
 ]
