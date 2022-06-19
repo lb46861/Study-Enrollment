@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
+
+{% if request.user.role|lower == 'admin' %}
 <form method="post">
   {% csrf_token %}
   <h2>Dodaj novog korisnika:</h2>
@@ -16,4 +18,11 @@
     {% csrf_token %}
     <input type="submit" value="Create user">
 </form>
+
+
+{% else %}
+
+  <p>No permission</p>
+
+{% endif %}
 {% endblock %}

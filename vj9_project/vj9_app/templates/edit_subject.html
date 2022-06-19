@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% if request.user.role|lower == 'admin' %}
 <form method="post">
   {% csrf_token %}
     {% for field in form %}
@@ -15,4 +16,9 @@
     {% csrf_token %}
     <input type="submit" value="Edit">
 </form>
+
+{% else %}
+<p>You have no permission for this site!</p>
+
+{% endif %}
 {% endblock %}

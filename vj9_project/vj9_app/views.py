@@ -109,9 +109,20 @@ def subjectdetails(request, id):
 @login_required(login_url='login')
 def mysubjects(request, profesor_id):
     predmeti = Predmeti.objects.filter(nositelj = profesor_id)
-    return render(request, "my_subjects.html", {'predmeti': predmeti, 'profesor_id': profesor_id})
+    profesor = Korisnik.objects.get(id = profesor_id)
+    return render(request, "my_subjects.html", {'predmeti': predmeti, 'profesor': profesor})
 
     
+
+def createupis(student_id, predmet_id, status):
+        student = Korisnik.objects.get(id=student_id)
+        predmet = Predmeti.objects.get(id=predmet_id)
+        Upisi.objects.create(student=student, subject=predmet, status=status)
+
+def deleteupis(student_id, predmet_id):
+        upis = Upisi.objects.filter(student=student_id, subject=predmet_id)
+        upis.delete()
+
 @login_required(login_url='login')
 def upisni(request, student_id):
     predmeti = Predmeti.objects.all()
@@ -119,6 +130,15 @@ def upisni(request, student_id):
     upisni = Upisi.objects.filter(student = student.id)
     upisani = upisni.values_list('subject', flat=True)
     
+    if request.method == 'POST':
+        status = request.POST['status']
+        predmet_id = request.POST['predmet_id']
+        if(status == 'upisan'):
+            createupis(student_id, predmet_id, status) 
+        elif(status == 'ispis'):
+            deleteupis(student_id, predmet_id)
+        #return redirect('upisni', student_id)  
+
     data = {
         "predmeti": predmeti,
         "student": student,
@@ -128,64 +148,28 @@ def upisni(request, student_id):
 
     return render(request, "upisni_list.html", data)
 
-@login_required(login_url='login')
-def upispredmeta(request, student_id, predmet_id):
-    if str(request.user.role) == 'admin' or request.user.id == student_id:
-        student = Korisnik.objects.get(id=student_id)
-        predmet = Predmeti.objects.get(id=predmet_id)
-        Upisi.objects.create(student=student, subject=predmet, status='upisan')
-        return redirect('upisni', student.id)
-    else:  
-        return HttpResponse('You have no permission!')
 
-
-@login_required(login_url='login')
-def upisprofesor(request, student_id, predmet_id):
-    predmet = Predmeti.objects.get(id = predmet_id)
-    if request.user.id == predmet.nositelj.id or str(request.user.role) == 'admin':
-        upis = Upisi.objects.get(student=student_id, subject=predmet_id)
-        upis.status = 'upisan'
-        upis.save()
-        return redirect('popisstudenata', predmet_id)
-    else:  
-        return HttpResponse('You have no permission!')
-
-@login_required(login_url='login')
-def polozenpredmet(request, student_id, predmet_id):
-    predmet = Predmeti.objects.get(id = predmet_id)
-    if request.user.id == predmet.nositelj.id or str(request.user.role) == 'admin':
-        upis = Upisi.objects.get(student=student_id, subject=predmet_id)
-        upis.status = 'polozen'
-        upis.save()
-        return redirect('popisstudenata', predmet_id)
-    else:  
-        return HttpResponse('You have no permission!')
-
-@login_required(login_url='login')
-def izgubiopravo(request, student_id, predmet_id):
-    predmet = Predmeti.objects.get(id = predmet_id)
-    if request.user.id == predmet.nositelj.id or str(request.user.role) == 'admin':
-        upis = Upisi.objects.get(student=student_id, subject=predmet_id)
-        upis.status = 'izgubio/la pravo'
-        upis.save()
-        return redirect('popisstudenata', predmet_id)
-    else:  
-        return HttpResponse('You have no permission!')      
-
-
-@login_required(login_url='login')
-def ispispredmeta(request, student_id, predmet_id):
-    upis = Upisi.objects.filter(student=student_id, subject=predmet_id)
-    upis.delete()
-    return redirect('upisni', student_id)
-
-
+def updateupis(student_id, predmet_id, status):
+    upis = Upisi.objects.get(student=student_id, subject=predmet_id)
+    upis.status = status
+    upis.save()
+        
 @login_required(login_url='login')
 def popisstudenata(request, predmet_id):
     predmet = Predmeti.objects.get(id = predmet_id)
     upis = Upisi.objects.filter(subject=predmet)
+
+    if request.method == 'POST':
+        status = request.POST['status']
+        student_id = request.POST['student_id']
+        updateupis(student_id, predmet_id, status)
+        #return redirect('popisstudenata', predmet_id)
+
     return render(request, "popis_studenata.html", {'upisani': upis, "predmet": predmet})
 
+
+
+  
 @login_required(login_url='login')
 def studentspredmet(request, predmet_id):
     predmet = Predmeti.objects.get(id = predmet_id)
@@ -241,7 +225,7 @@ def deleteuser(request, id):
             user.delete()
             return HttpResponse('Successfully deleted!')
         else:
-            return redirect('subjectlist')
+            return redirect('studentlist')
 
     return render(request, "delete_object.html", {'object':user})
 

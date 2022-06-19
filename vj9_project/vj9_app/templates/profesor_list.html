@@ -1,4 +1,6 @@
 {% extends 'base.html' %} {% block content %}
+
+{% if request.user.role|lower == 'admin' %}
 {% csrf_token %}
 
 <p>Dodaj novog korisnika:  <a href="{% url 'adduser' %}">Dodaj korisnika</a></p>
@@ -19,5 +21,7 @@
 {% endfor %}
 {% csrf_token %}
 
-
+{% else %}
+<p>You have no permission for this site!</p>
+{% endif %}
  {% endblock %}

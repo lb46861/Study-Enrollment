@@ -6,30 +6,44 @@
 <h3>Upisali:</h3>
 {% for upis in upisani %}
     {% if upis.status == 'upisan' %}
-        <p>{{upis.student}}  &nbsp;{{upis.student.email}}
-        <a class='polozio' href="{%url 'polozenpredmet' student_id=upis.student.id predmet_id=upis.subject.id %}">Polozio/la</a>
-        <a class='izgubio' href="{%url 'izgubiopravo' student_id=upis.student.id predmet_id=upis.subject.id %}">Izgubio/la pravo</a>
-        </p>
+       
+        <form method="post">
+            <p>{{upis.student}}  &nbsp;{{upis.student.email}}
+            {% csrf_token %}
+            <input type="hidden" name="student_id" value="{{ upis.student.id }}" />
+            <button class='polozio' type="submit" name="status" value="polozen">Položio/la</button>
+            <button class='izgubio' type="submit" name="status" value="izgubio/la pravo">Izgubio/la pravo</button>    
+            </p>                     
+        </form>         
+
     {% endif %}
 {% endfor %}
 
 <h3>Polozili:</h3>
 {% for upis in upisani %}
     {% if upis.status == 'polozen' %}
-        <p>{{upis.student.username}} &nbsp;{{upis.student.email}} <a class='vrati' href="{%url 'upisprofesor' student_id=upis.student.id predmet_id=upis.subject.id %}" >Vrati u upis</a>
-        <a class='izgubio' href="{%url 'izgubiopravo' student_id=upis.student.id predmet_id=upis.subject.id %}">Izgubio/la pravo</a>
-        </p>
+        <form method="post">
+            <p>{{upis.student}}  &nbsp;{{upis.student.email}}
+            {% csrf_token %}
+            <input type="hidden" name="student_id" value="{{ upis.student.id }}" />
+            <button class='vrati' type="submit" name="status" value="upisan">Vrati u upis</button>
+            <button class='izgubio' type="submit" name="status" value="izgubio/la pravo">Izgubio/la pravo</button>    
+            </p>                     
+        </form>     
     {% endif %}
 {% endfor %}
 
 <h3>Izgubili pravo:</h3>
 {% for upis in upisani %}
     {% if upis.status == 'izgubio/la pravo' %}
-        <p>{{upis.student.username}} &nbsp;{{upis.student.email}}
-            <a class='vrati' href="{%url 'upisprofesor' student_id=upis.student.id predmet_id=upis.subject.id %}" >Vrati u upis</a>
-            <a class='polozio' href="{%url 'polozenpredmet' student_id=upis.student.id predmet_id=upis.subject.id %}">Polozio/la</a>
-
-        </p>
+        <form method="post">
+            <p>{{upis.student}}  &nbsp;{{upis.student.email}}
+            {% csrf_token %}
+            <input type="hidden" name="student_id" value="{{ upis.student.id }}" />
+            <button class='vrati' type="submit" name="status" value="upisan">Vrati u upis</button>
+            <button class='polozio' type="submit" name="status" value="polozen">Položio/la</button>    
+            </p>                     
+        </form>     
     {% endif %}
 {% endfor %}
 

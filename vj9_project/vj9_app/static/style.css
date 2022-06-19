@@ -14,6 +14,7 @@
     text-decoration: none;
     float: left;
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .ispis {
@@ -27,6 +28,7 @@
     text-decoration: none;
     float: left;
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .polozio{
@@ -39,6 +41,7 @@
     text-decoration: none;
     display: inline-block;
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .izgubio{
@@ -51,6 +54,7 @@
     text-align: center;
     text-decoration: none;
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .vrati{
@@ -63,6 +67,7 @@
     text-align: center;
     text-decoration: none;
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .upisnilist{
@@ -122,20 +127,20 @@ input[type=submit]{
 }
 
 
-  input[type=number],
-  input[type=text],
-  input[type=password],
-  input[type=email],
-  input[type=select] {
+input[type=number],
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=select] {
     width: 180px;
     padding: 5px 5px;
     margin: 8px 0;
     box-sizing: border-box;
-  }
-  select {
+}
+select {
     width: 180px;
     padding:5px;
     box-sizing: border-box;
     margin: 8px 0;
-  }
+}
 

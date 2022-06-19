@@ -3,7 +3,7 @@
 {% if request.user.role|lower == 'admin' or request.user.role|lower == 'student' and request.user.id == student.id %}
 
 <div class="upisnilist">
-    <h1>{{student.username|capfirst}}'s Upisni list</h1>
+    <h1>{{student.username|capfirst}}'s Upisni list - {{student.email}}</h1>
 
     <!-----[ NEUPISANI PREDMETI POREDANI PO SEMESTRU ]---->
     <div class="leftupisni">
@@ -14,8 +14,14 @@
                     <h3>Semestar {{forloop.counter}}:</h3>
                     {% for predmet in predmeti %}
                         {% if predmet.sem_red == forloop.parentloop.counter and predmet.id not in upisani %}                   
-                            <p>{{predmet}} <a class='upis' href="{%url 'upispredmeta' student_id=student.id predmet_id=predmet.id %}">+</a>
-                                &nbsp;<a href="{% url 'subjectdetails' predmet.id %}">Details</a></p>                           
+                            <form method="post">
+                                <p>{{predmet}} 
+                            &nbsp;<a href="{% url 'subjectdetails' predmet.id %}">Details</a>                       
+                                {% csrf_token %}
+                                <input type="hidden" name="predmet_id" value="{{ predmet.id }}" />
+                                <button class='upis' type="submit" name="status" value="upisan">+</button>    
+                                </p>                     
+                            </form>                                                         
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
@@ -26,9 +32,17 @@
                 {% for _ in range %}
                     <h3>Semestar {{forloop.counter}}:</h3>
                     {% for predmet in predmeti %}
-                        {% if predmet.sem_izv == forloop.parentloop.counter and predmet.id not in upisani %}                   
-                            <p>{{predmet}} <a class='upis' href="{%url 'upispredmeta' student_id=student.id predmet_id=predmet.id %}">+</a>
-                                &nbsp;<a href="{% url 'subjectdetails' predmet.id %}">Details</a></p>                        
+                        {% if predmet.sem_izv == forloop.parentloop.counter and predmet.id not in upisani %}                                           
+                                <form method="post">
+                                    <p>{{predmet}} 
+                                &nbsp;<a href="{% url 'subjectdetails' predmet.id %}">Details</a>  
+                            
+                                    {% csrf_token %}
+                                    <input type="hidden" name="predmet_id" value="{{ predmet.id }}" />
+                                    <button class='upis' type="submit" name="status" value="upisan">+</button>    
+                                    </p>                     
+                                </form>
+    
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
@@ -48,8 +62,15 @@
                 {% for _ in range %}          
                     {% for upis in upisni %}
                         {% if upis.subject.sem_red == forloop.parentloop.counter and upis.status == 'upisan' %}                   
-                            <p>Semestar {{forloop.parentloop.counter}} - {{upis.subject}} <a class='ispis' href="{%url 'ispispredmeta' student_id=student.id predmet_id=upis.subject.id %}">-</a>
-                                &nbsp;<a href="{% url 'subjectdetails' upis.subject.id %}">Details</a></p>                        
+                            <form method="post">
+                                <p>Semestar {{forloop.parentloop.counter}} - {{upis.subject.name}} 
+                            &nbsp;<a href="{% url 'subjectdetails' upis.subject.id %}">Details</a>  
+                        
+                                {% csrf_token %}
+                                <input type="hidden" name="predmet_id" value="{{ upis.subject.id }}" />
+                                <button class='ispis' type="submit" name="status" value="ispis">-</button>    
+                                </p>                     
+                            </form>               
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
@@ -60,8 +81,15 @@
                 {% for _ in range %}          
                     {% for upis in upisni %}
                         {% if upis.subject.sem_izv == forloop.parentloop.counter and upis.status == 'upisan' %}                   
-                            <p>Semestar {{forloop.parentloop.counter}} - {{upis.subject}} <a class='ispis' href="{%url 'ispispredmeta' student_id=student.id predmet_id=upis.subject.id %}">-</a>
-                                &nbsp;<a href="{% url 'subjectdetails' upis.subject.id %}">Details</a></p>                     
+                                <form method="post">
+                                    <p>Semestar {{forloop.parentloop.counter}} - {{upis.subject.name}} 
+                                &nbsp;<a href="{% url 'subjectdetails' upis.subject.id %}">Details</a>  
+                            
+                                    {% csrf_token %}
+                                    <input type="hidden" name="predmet_id" value="{{ upis.subject.id }}" />
+                                    <button class='ispis' type="submit" name="status" value="ispis">-</button>    
+                                    </p>                     
+                                </form>
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
@@ -124,38 +152,6 @@
             {% endwith %}
         {% endif %}
         
-
-
-
-
-
-        <!----[ DRUGI NACIN - NIJE POREDANO PO SEMESTRU VEC PO VREMENU KREIRANJA OBJEKTA ]---->
-        <!-- <h2>Upisani predmeti:</h2>     
-        {% for upis in upisni %}
-            {% if upis.status == 'upisan' %}
-                <p>{{upis.subject}} -
-                {% if student.status == 'red' %} Semestar {{upis.subject.sem_red}} {% else %} Semestar {{upis.subject.sem_red}} {% endif %}
-                <a class='ispis' href="{% url 'ispispredmeta' student_id=student.id predmet_id=upis.subject.id %}">-</a>
-                &nbsp;<a href="{% url 'subjectdetails' upis.subject.id %}">Details</a></p>
-            {% endif %}
-        {% endfor %} 
-
-        <h2>Položeni predmeti:</h2>
-        {% for upis in upisni %}
-            {% if upis.status == 'polozen' %}
-                <p>{{upis.subject}} &nbsp;<a href="{% url 'subjectdetails' upis.subject.id %}">Details</a></p>
-            {% endif %}
-
-        {% endfor %}
-
-        <h2>Predmeti na koje ste izgubili pravo za ovu godinu:</h2>
-        {% for upis in upisni %}
-            {% if upis.status == 'izgubio/la pravo' %}
-                <p>{{upis.subject}} &nbsp;<a href="{% url 'subjectdetails' upis.subject.id %}">Details</a></p>
-            {% endif %}
-
-        {% endfor %}
-        -->
     </div>  
 
 </div>
